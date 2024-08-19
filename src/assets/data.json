@@ -1,0 +1,43 @@
+{
+  "categories": [
+    {
+      "name": "CSPM Executive Dashboard",
+      "widgets": [
+        {
+          "name": "Cloud Accounts",
+          "text": "Cloud Accounts"
+        },
+        {
+          "name": "Cloud Account Risk Assessment",
+          "text": "Cloud Account Risk Assessment"
+        }
+      ]
+    },
+    {
+      "name": "CWPP Dashboard:",
+      "widgets": [
+        {
+          "name": "Top 5 Namespace Specific Alerts",
+          "text": "Alerts"
+        },
+        {
+          "name": "Workload Alerts",
+          "text": "Alerts"
+        }
+      ]
+    },
+    {
+      "name": "Registry Scan",
+      "widgets": [
+        {
+          "name": "Image Risk Assessment",
+          "text": "1470 Total vulnerabilities"
+        },
+        {
+          "name": "Image Security Issues",
+          "text": "2 Total Images"
+        }
+      ]
+    }
+  ]
+}
