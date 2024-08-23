@@ -2,8 +2,8 @@ import { BsGithub } from "react-icons/bs";
 
 const Footer = () => {
   return (
-    <div className="bg-gray-400 py-8">
-      <div className="container mx-auto flex flex-col gap-4">
+    <div className="bg-gray-800 py-8">
+      <div className="mx-auto flex flex-col gap-4">
         <span className="text-white tracking-tight font-bold flex justify-around items-center gap-4">
           <p className="cursor-pointer">Privacy Policy</p>
           <p className="cursor-pointer">Terms of Service</p>

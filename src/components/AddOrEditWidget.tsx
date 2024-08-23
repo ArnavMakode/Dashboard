@@ -69,7 +69,7 @@ const AddOrEditWidget = ({
                 validate: (name) => {
                   if (name.trim() === "" || name === null)
                     return "name is required";
-                  if (includesWidgetName({ categoryId, widgetName: name }))
+                  if (includesWidgetName({ categoryId, widgetName: name }) && !widget)
                     return "this category name already exists. try another name";
                 },
               })}
