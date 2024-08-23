@@ -1,50 +1,89 @@
-# React + TypeScript + Vite
+# Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based dashboard application for managing widgets within categories. This project utilizes Vite for build tooling, React for UI components, TypeScript for type safety, and the Context API for state management.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-## Expanding the ESLint configuration
+## Project Overview
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This project is a React application designed to manage widgets efficiently. It offers functionalities to add, update, select, unselect, and delete widgets within various categories. Users can also search for specific widgets by name. The state of categories and widgets is managed using the Context API and persisted locally.
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Widget Management:**
+  - Add new widgets to specific categories
+  - Update widget properties
+  - Select and unselect widgets using checkboxes
+  - Delete widgets from categories
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **Search:**
+  - Filter widgets by their names using the search bar
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Persistent State:**
+  - State management is handled using the Context API, ensuring that categories and widget data are persisted locally.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- Node.js (version 20.13.1 or later)
+- npm (Node Package Manager)
+
+## Installation
+
+Follow these steps to set up the project on your local machine:
+
+1. **Clone the Repository:**
+
+    ```bash
+    git clone https://github.com/ArnavMakode/Dashboard.git
+    ```
+
+
+2. **Navigate to the Project Directory:**
+
+    ```bash
+    cd dashboard
+    ```
+
+3. **Install Dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+4. **Start the Development Server:**
+
+    ```bash
+    npm run dev
+    ```
+
+    This will start the Vite development server. The project will be accessible at [http://localhost:5173](http://localhost:5173) or check the terminal for the exact local server address.
+
+## Usage
+
+1. **Navigate to the Dashboard:**
+   Open your browser and go to [http://localhost:5173](http://localhost:5173).
+
+2. **Add Widgets:**
+   - Click the "Add Widget" button.
+   - Enter the widget name and text.
+
+3. **Manage Widgets:**
+   - **Select/Unselect:** Use the checkboxes next to each widget.
+   - **Edit:** Click the "Edit" button to update a widget's properties.
+   - **Delete:** Click the "Delete" button to remove a widget.
+
+4. **Search:**
+   - Use the search bar to find widgets by their names. The search feature filters widgets based on the input.
+
+## Contributing
+
+Contributions are welcome!
