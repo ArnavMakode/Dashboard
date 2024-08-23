@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Widget } from "../shared/types";
 import useCategories from "../hooks/useCategories";
-import WidgetCard from "../components/WidgetCard";
 import SearchResultsCard from "../components/SearchResultsCard";
 
 const Search = () => {

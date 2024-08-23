@@ -5,7 +5,6 @@ import { useAppContext } from "../context/AppContext";
 import DashboardList from "../components/DashboardList";
 import FilterWidgets from "../components/FilterWidgets";
 import { useState } from "react";
-import { Category } from "../shared/types";
 
 const Dashboard = () => {
   const { categories } = useAppContext();
