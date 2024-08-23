@@ -1,66 +1,26 @@
-import { useState, useEffect } from "react";
-import { Category, Widget } from "../shared/types";
-import { v4 as uuid4 } from "uuid";
-import data from "../assets/data.json";
+import {
+  AddWidgetProps,
+  DeleteWidgetProps,
+  UpdateWidgetProps,
+  Widget,
+  IncludesWidgetIdProps,
+  IncludesWidgetNameProps,
+  CheckWidgetProps,
+} from "../shared/types";
+import { useAppContext } from "../context/AppContext";
 
-export type addWidgetProps = {
-  id: string;
-  name: string;
-  text: string;
-};
+export default function useCategories() {
+  const { categories, setCategories } = useAppContext();
 
-export type deleteWidgetProps = {
-  categoryId: string;
-  widgetId: string;
-};
-
-export type updateWidgetProps = {
-  categoryId: string;
-  widgetId: string;
-  name: string;
-  text: string;
-};
-
-export function useCategories() {
-  const [categories, setCategories] = useState<Category[]>(() => {
-    try {
-      const storedCategories = sessionStorage.getItem("categories");
-      return storedCategories
-        ? (JSON.parse(storedCategories) as Category[])
-        : data.categories.map((category) => ({
-            ...category,
-            id: uuid4(),
-            widgets: category.widgets.map((widget) => ({
-              ...widget,
-              id: uuid4(),
-            })),
-          }));
-    } catch (error) {
-      console.log("Error parsing stored data");
-      return data.categories.map((category) => ({
-        ...category,
-        id: uuid4(),
-        widgets: category.widgets.map((widget) => ({
-          ...widget,
-          id: uuid4(),
-        })),
-      }));
-    }
-  });
-
-  useEffect(() => {
-    sessionStorage.setItem("categories", JSON.stringify(categories));
-  }, [categories]);
-
-  const addWidget = ({ id, name, text }: addWidgetProps) => {
+  const addWidget = ({ categoryId, widgetId, name, text }: AddWidgetProps) => {
     setCategories((prev) =>
       prev.map((category) =>
-        category.id === id
+        category.id === categoryId
           ? {
               ...category,
               widgets: [
                 ...(category.widgets ?? []),
-                { id: uuid4(), name, text },
+                { id: widgetId, name, text, isChecked: true },
               ],
             }
           : category
@@ -68,7 +28,7 @@ export function useCategories() {
     );
   };
 
-  const deleteWidget = ({ categoryId, widgetId }: deleteWidgetProps) => {
+  const deleteWidget = ({ categoryId, widgetId }: DeleteWidgetProps) => {
     setCategories((prev) =>
       prev.map((category) =>
         category.id === categoryId
@@ -88,7 +48,7 @@ export function useCategories() {
     widgetId,
     name,
     text,
-  }: updateWidgetProps) => {
+  }: UpdateWidgetProps) => {
     setCategories((prev) =>
       prev.map((category) =>
         category.id === categoryId
@@ -104,12 +64,55 @@ export function useCategories() {
   };
 
   const findWidgets = (query: string): Widget[] =>
-    categories.flatMap(
-      (category) =>
-        category.widgets?.filter((widget) =>
-          widget.name.toLowerCase().includes(query.trim().toLowerCase())
-        ) || []
-    );
+    query === ""
+      ? []
+      : categories.flatMap(
+          (category) =>
+            category.widgets?.filter((widget) =>
+              widget.name.toLowerCase().includes(query.trim().toLowerCase())
+            ) || []
+        );
 
-  return { categories, addWidget, deleteWidget, updateWidget, findWidgets };
+  const includesWidgetName = ({
+    categoryId,
+    widgetName,
+  }: IncludesWidgetNameProps): boolean =>
+    categories
+      .find((category) => category.id === categoryId)
+      ?.widgets?.some((widget) => widget.name === widgetName) || false;
+
+  const includesWidgetId = ({
+    categoryId,
+    widgetId,
+  }: IncludesWidgetIdProps): boolean =>
+    categories
+      .find((category) => category.id === categoryId)
+      ?.widgets?.some((widget) => widget.id === widgetId) || false;
+
+  const checkWidget = ({ categoryId, widgetId }: CheckWidgetProps) => {
+    setCategories((prevCategories) =>
+      prevCategories.map((category) =>
+        category.id === categoryId
+          ? {
+              ...category,
+              widgets: category.widgets?.map((widget) =>
+                widget.id === widgetId
+                  ? { ...widget, isChecked: false }
+                  : widget
+              ),
+            }
+          : category
+      )
+    );
+  };
+
+  return {
+    addWidget,
+    deleteWidget,
+    updateWidget,
+    findWidgets,
+    includesWidgetName,
+    includesWidgetId,
+    checkWidget,
+  };
 }

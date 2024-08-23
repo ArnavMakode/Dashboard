@@ -1,11 +1,13 @@
-import { createContext, ReactNode, useContext, useState } from "react";
-import { Category, Widget } from "../shared/types";
 import {
-  useCategories,
-  addWidgetProps,
-  deleteWidgetProps,
-  updateWidgetProps,
-} from "../hooks/useCategories";
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Category } from "../shared/types";
+import { v4 as uuid4 } from "uuid";
+import data from "../assets/data.json";
 
 type AppContextProviderProps = {
   children: ReactNode;
@@ -14,35 +16,57 @@ type AppContextProviderProps = {
 interface AppContext {
   isEditable: boolean;
   categories: Category[];
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   switchEditable: () => void;
-  addWidget: ({ id, name, text }: addWidgetProps) => void;
-  deleteWidget: ({ categoryId, widgetId }: deleteWidgetProps) => void;
-  updateWidget: ({
-    categoryId,
-    widgetId,
-    name,
-    text,
-  }: updateWidgetProps) => void;
-  findWidgets: (query: string) => Widget[];
 }
 
 const Appcontext = createContext<AppContext | undefined>(undefined);
 
 const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [isEditable, setIsEditable] = useState<boolean>(true);
-  const { categories, addWidget, deleteWidget, updateWidget, findWidgets } =
-    useCategories();
+
+  const [categories, setCategories] = useState<Category[]>(() => {
+    try {
+      const storedCategories = sessionStorage.getItem("categories");
+      if (storedCategories) {
+        return JSON.parse(storedCategories) as Category[];
+      } else {
+        return data.categories.map((category) => ({
+          ...category,
+          id: uuid4(),
+          widgets: category.widgets.map((widget) => ({
+            ...widget,
+            id: uuid4(),
+            isChecked: true,
+          })),
+        }));
+      }
+    } catch (error) {
+      console.log("Error parsing stored data");
+      return data.categories.map((category) => ({
+        ...category,
+        id: uuid4(),
+        widgets: category.widgets.map((widget) => ({
+          ...widget,
+          id: uuid4(),
+          isChecked: true,
+        })),
+      }));
+    }
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("categories", JSON.stringify(categories));
+  }, [categories]);
+
   const switchEditable = () => setIsEditable((prevEditable) => !prevEditable);
   return (
     <Appcontext.Provider
       value={{
         isEditable,
         categories,
+        setCategories,
         switchEditable,
-        addWidget,
-        deleteWidget,
-        updateWidget,
-        findWidgets,
       }}
     >
       {children}
